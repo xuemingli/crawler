@@ -13,6 +13,8 @@ import (
 var personDataRe = regexp.MustCompile(`<div class="des f-cl" data-v-3c42fade>([^<]+)</div>`)
 var personWeightRe = `<div class="m-btn purple" data-v-8b1eac0c>([\d]+)kg</div>`
 
+//var guessYourLikeRe = `<span class="nickname f-clamp1" data-v-4a9ca87a>石头</span>`
+
 func ParseProfile(contents []byte, name string, gender string) engine.ParseResult {
 	profile := model.Profile{}
 	profile.Name = name
