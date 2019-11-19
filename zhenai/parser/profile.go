@@ -10,10 +10,10 @@ import (
 //<div class="des f-cl" data-v-3c42fade>太原 | 35岁 | 大学本科 | 离异 | 165cm | 8001-12000元</div>
 var personDataRe = regexp.MustCompile(`<div class="des f-cl" data-v-3c42fade>([^<]+)</div>`)
 
-func ParseProfile(contents []byte, name string) engine.ParseResult {
+func ParseProfile(contents []byte, name string, gender string) engine.ParseResult {
 	profile := model.Profile{}
 	profile.Name = name
-
+	profile.Gender = gender
 	match := personDataRe.FindSubmatch(contents)
 
 	//if match != nil {

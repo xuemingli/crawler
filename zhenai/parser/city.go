@@ -5,10 +5,12 @@ import (
 	"regexp"
 )
 
-const cityRe = `<a href="(http://album.zhenai.com/u/[0-9]+)"[^>]*>([^<]+)</a>`
+//const cityRe = `<a href="(http://album.zhenai.com/u/[0-9]+)"[^>]*>([^<]+)</a>`
+
+const cityRe2 = `<a href="(http://album.zhenai.com/u/[0-9]+)"[^>]*>([^<]+)</a></th></tr> <tr><td width="180"><span class="grayL">ÐÔ±ð£º</span>([^<]+)</td>`
 
 func ParseCity(contents []byte) engine.ParseResult {
-	re := regexp.MustCompile(cityRe)
+	re := regexp.MustCompile(cityRe2)
 	/*
 		matchs := re.FindAll(contents, -1)
 		matchs = matchs[6:]
@@ -18,19 +20,19 @@ func ParseCity(contents []byte) engine.ParseResult {
 		}
 	*/
 	submatch := re.FindAllSubmatch(contents, -1)
-	//submatch = submatch[6:]
-	//submatch = submatch[:len(submatch)-6]
-	//var w string
+	//for _, m := range submatch {
+	//	fmt.Printf(">>>%s\n", m)
+	//}
 	result := engine.ParseResult{}
 	for _, m := range submatch {
 		name := string(m[2])
+		gender := string(m[3])
 		result.Items = append(result.Items, "User "+string(m[2]))
 		result.Requests = append(result.Requests, engine.Request{
 			Url: string(m[1]),
 			ParserFunc: func(c []byte) engine.ParseResult {
-				return ParseProfile(c, name)
+				return ParseProfile(c, name, gender)
 			}})
-		//fmt.Printf("city: %s, url: %s\n", m[2], w)
 	}
 	return result
 }
