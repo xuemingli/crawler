@@ -18,9 +18,10 @@ func TestParseProfile(t *testing.T) {
 	profile := results.Items[0].(model.Profile)
 	expected := model.Profile{
 		Name:       "小明",
-		Age:        "39岁",
+		Age:        39,
 		Gender:     "男士",
-		Height:     "163cm",
+		Height:     163,
+		Weight:     0,
 		Income:     "3000元以下",
 		Marriage:   "离异",
 		Education:  "高中及以下",

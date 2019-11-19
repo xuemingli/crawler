@@ -28,17 +28,17 @@ func ParseCityList(contents []byte) engine.ParseResult {
 	submatch = submatch[:len(submatch)-6]
 	var w string
 	result := engine.ParseResult{}
-	limit := 2
+	//limit := 2
 	for _, m := range submatch {
 		w = urlprefix
 		w += string(m[1])
 		result.Items = append(result.Items, "City "+string(m[2]))
 		result.Requests = append(result.Requests, engine.Request{Url: w, ParserFunc: ParseCity})
 		//fmt.Printf("city: %s, url: %s\n", m[2], w)
-		limit--
-		if limit == 0 {
-			break
-		}
+		//limit--
+		//if limit == 0 {
+		//	break
+		//}
 	}
 	return result
 }

@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 
 	"golang.org/x/net/html/charset"
 	"golang.org/x/text/encoding"
@@ -16,7 +17,10 @@ const zhenai_url = "http://www.zhenai.com/zhenghun"
 const province_url = "http://www.maps7.com/china_province.php"
 const huazhengcaiwu = "https://www.huazhengcaiwu.com/city/"
 
+var rateLimiter = time.Tick(100 * time.Millisecond)
+
 func Fetch(url string) ([]byte, error) {
+	<-rateLimiter
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		panic(err)
