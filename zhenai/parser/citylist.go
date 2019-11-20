@@ -8,19 +8,10 @@ import (
 var urlprefix string = "http://www.zhenai.com/zhenghun"
 
 //<a href="http://album.zhenai.com/u/1615511201" target="_blank">皮皮虾</a>
-const cityListRe = `<a href="(/[a-z]+/)" >([^<]+)</a>`
+var cityListRe = regexp.MustCompile(`<a href="(/[a-z]+/)" >([^<]+)</a>`)
 
 func ParseCityList(contents []byte) engine.ParseResult {
-	re := regexp.MustCompile(cityListRe)
-	/*
-		matchs := re.FindAll(contents, -1)
-		matchs = matchs[6:]
-		matchs = matchs[:len(matchs)-6]
-		for _, m := range matchs{
-			fmt.Printf("%s\n",m)
-		}
-	*/
-	submatch := re.FindAllSubmatch(contents, -1)
+	submatch := cityListRe.FindAllSubmatch(contents, -1)
 	//for _, m := range submatch {
 	//	fmt.Printf("------%s\n", m)
 	//}

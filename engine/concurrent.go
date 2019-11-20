@@ -1,13 +1,13 @@
 package engine
 
 import (
-	"learngo/crawler/model"
 	"log"
 )
 
 type ConcurrentEngine struct {
 	Scheduler   Scheduler
 	WorkerCount int
+	ItemChan    chan Item
 }
 
 type Scheduler interface {
@@ -35,17 +35,15 @@ func (e *ConcurrentEngine) Run(seeds ...Request) {
 		}
 		e.Scheduler.Submit(r)
 	}
-	itemCount := 0
 	for {
 		result := <-out
 		for _, item := range result.Items {
-			if _, ok := item.(model.Profile); ok {
-				log.Printf("Got item #%d: %v", itemCount, item)
-				itemCount++
-			}
+			go func() {
+				e.ItemChan <- item
+			}()
 		}
 
-		// URL dedupÈ¥ÖØ
+		// URL dedupåŽ»é‡
 		for _, request := range result.Requests {
 			if isDuplicate(request.Url) {
 				//log.Printf("Duplicate request: %s", request.Url)
