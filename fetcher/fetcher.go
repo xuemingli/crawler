@@ -17,7 +17,7 @@ const zhenai_url = "http://www.zhenai.com/zhenghun"
 const province_url = "http://www.maps7.com/china_province.php"
 const huazhengcaiwu = "https://www.huazhengcaiwu.com/city/"
 
-var rateLimiter = time.Tick(100 * time.Millisecond)
+var rateLimiter = time.Tick(450 * time.Millisecond)
 
 func Fetch(url string) ([]byte, error) {
 	<-rateLimiter
