@@ -1,10 +1,10 @@
 # crawler
-这是一个用go语言写的爬虫项目，用来爬取 http://www.zhenai.com 网站里面的人物信息，将信息存储到Elasticsearch中，通过简单的前端页面进行筛选并显示。
+>>这是一个用go语言写的爬虫项目，用来爬取 http://www.zhenai.com 网站里面的人物信息，将信息存储到Elasticsearch中，通过简单的前端页面进行筛选并显示。
 
 ## 环境
-golang: v1.13<br>
-docker: 19.03.5<br>
-ElasticSearch: 7.0<br>
+* golang: `v1.13`
+* docker: `19.03.5`
+* ElasticSearch: `7.0`
 
 ## 运行
 * 启动docker
