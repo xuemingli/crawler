@@ -2,7 +2,7 @@
 >>这是一个用go语言写的爬虫项目，用来爬取 http://www.zhenai.com 网站里面的人物信息，将信息存储到Elasticsearch中，通过简单的前端页面进行筛选并显示。
 
 ## 环境
-* golang: `v1.13`
+* golang: `1.13`
 * docker: `19.03.5`
 * ElasticSearch: `7.0`
 
@@ -40,7 +40,15 @@
    Version:          0.18.0
    GitCommit:        fec3683
   ```
-* 在docker中运行elasticsearch镜像
+* 在docker中安装并运行elasticsearch镜像
+  * 安装
+  ```
+  $docker pull docker.elastic.co/elasticsearch/elasticsearch:7.4.2
+  ```
+  * 运行
+  ```
+  $docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.4.2
+  ```
 * 运行main.go进行数据爬取
 * 运行start.go启动本地web服务
 * 访问localhost:8888
