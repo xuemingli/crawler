@@ -52,4 +52,7 @@
 * 运行main.go进行数据爬取
 * 运行start.go启动本地web服务
 * 访问localhost:8888
-  ![首页展示](https://github.com/xuemingli/crawler/blob/master/index.png) 
+  * 首页信息如下图
+  ![](https://github.com/xuemingli/crawler/blob/master/index.png "首页信息") 
+  * 查询信息如下图
+  ![](https://github.com/xuemingli/crawler/blob/master/show.png "信息展示") 
