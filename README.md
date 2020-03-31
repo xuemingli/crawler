@@ -124,11 +124,11 @@ $ sudo docker run hello-world
   ```
   $docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.4.2
   ```
-  ## 安装go依赖包
+## 安装go依赖包
   ```Bash
   go get github.com/olivere/elastic/v7
   ```
-  ## 运行
+## 运行
 * 运行main.go进行数据爬取
 * 运行start.go启动本地web服务
 * 访问localhost:8888
