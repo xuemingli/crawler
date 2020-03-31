@@ -1,8 +1,13 @@
 # crawler
->>这是一个用go语言写的爬虫项目，用来爬取某相亲网站里面的人物信息，将信息存储到Elasticsearch中，通过简单的前端页面进行筛选并显示。
+==这是一个用go语言写的爬虫项目，用来爬取某相亲网站里面的人物信息，将信息存储到Elasticsearch中，通过简单的前端页面进行筛选并显示。
 
 ## 环境
-* golang: `1.13`
+* Linux:
+    lxm@lxm:~$ cat /proc/version
+    Linux version 5.3.0-42-generic (buildd@lcy01-amd64-019) (gcc version 7.4.0 (Ubuntu 7.4.0-1ubuntu1~18.04.1)) #34~18.04.1-Ubuntu SMP Fri Feb 28 13:42:26 UTC 2020
+* golang:
+    lxm@lxm:~$ go version
+    go version go1.13.5 linux/amd64
 * docker: `19.03.5`
 * ElasticSearch: `7.0`
 
