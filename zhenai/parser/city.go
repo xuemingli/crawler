@@ -17,6 +17,7 @@ func ParseCity(contents []byte) engine.ParseResult {
 	//for _, m := range submatch {
 	//	fmt.Printf(">>>%s\n", string(m[1]))
 	//}
+
 	result := engine.ParseResult{}
 	for _, m := range submatch {
 		name := string(m[2])
@@ -25,18 +26,16 @@ func ParseCity(contents []byte) engine.ParseResult {
 		url := string(m[1])
 		//result.Items = append(result.Items, "User "+string(m[2]))
 		result.Requests = append(result.Requests, engine.Request{
-			Url: string(m[1]),
-			ParserFunc: func(c []byte) engine.ParseResult {
-				return ParseProfile(c, url, name, gender)
-			},
+			Url:    string(m[1]),
+			Parser: NewProfileParser(name, url, gender),
 		})
 	}
 
 	submatch1 := cityNextPageRe.FindAllSubmatch(contents, -1)
 	for _, m := range submatch1 {
 		result.Requests = append(result.Requests, engine.Request{
-			Url:        string(m[1]),
-			ParserFunc: ParseCity,
+			Url:    string(m[1]),
+			Parser: engine.NewFuncParser(ParseCity, "ParseCity"),
 		})
 	}
 	return result

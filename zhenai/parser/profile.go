@@ -12,11 +12,14 @@ import (
 var personDataRe = regexp.MustCompile(`<div class="des f-cl" data-v-3c42fade>([^<]+)</div>`)
 var personWeightRe = regexp.MustCompile(`<div class="m-btn purple" data-v-8b1eac0c>([\d]+)kg</div>`)
 var userIdRe = regexp.MustCompile(`http://album.zhenai.com/u/([\d]+)`)
+var guessRe = regexp.MustCompile(
+	`<a class="exp-user-name"[^>]*href="(.*album\.zhenai\.com/u/[\d]+)">([^<]+)</a>`)
 
-func ParseProfile(contents []byte, url string, name string, gender string) engine.ParseResult {
+func parseProfile(contents []byte, url string, name string, gender string) engine.ParseResult {
 	profile := model.Profile{}
 	profile.Name = name
 	profile.Gender = gender
+	//fmt.Println(">>>", string(contents))
 	match := personDataRe.FindSubmatch(contents)
 	if match != nil {
 		tmp := string(match[1])
@@ -44,6 +47,8 @@ func ParseProfile(contents []byte, url string, name string, gender string) engin
 		}
 		profile.Income = val[5]
 		//fmt.Printf("籍贯:%s， 年龄:%s, 教育:%s, 婚况:%s, 身高:%s, 收入:%s\n", val[0], val[1], val[2], val[3], val[4], val[5])
+	} else {
+		//fmt.Println("match err")
 	}
 
 	submatch := personWeightRe.FindSubmatch(contents)
@@ -58,7 +63,7 @@ func ParseProfile(contents []byte, url string, name string, gender string) engin
 	} else {
 		profile.Weight = 0
 	}
-
+	//fmt.Printf("profile=%s \n", profile)
 	result := engine.ParseResult{
 		Items: []engine.Item{
 			{
@@ -69,6 +74,17 @@ func ParseProfile(contents []byte, url string, name string, gender string) engin
 			},
 		},
 	}
+
+	matches := guessRe.FindAllSubmatch(contents, -1)
+	for _, m := range matches {
+		m = m
+		result.Requests = append(result.Requests,
+			engine.Request{
+				Url:    url,
+				Parser: NewProfileParser(name, url, gender),
+			})
+	}
+
 	return result
 }
 
@@ -80,4 +96,22 @@ func extractString(contents []byte, re *regexp.Regexp) string {
 	} else {
 		return ""
 	}
+}
+
+type ProfileParser struct {
+	userName string
+	url      string
+	gender   string
+}
+
+func (p *ProfileParser) Parse(contents []byte) engine.ParseResult {
+	return parseProfile(contents, p.url, p.userName, p.gender)
+}
+
+func (p *ProfileParser) Serialize() (name string, args interface{}) {
+	return "ParseProfile", p.url + "##" + p.userName + "##" + p.gender
+}
+
+func NewProfileParser(name, url, gender string) *ProfileParser {
+	return &ProfileParser{userName: name, url: url, gender: gender}
 }

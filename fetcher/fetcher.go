@@ -2,7 +2,6 @@ package fetcher
 
 import (
 	"bufio"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -17,10 +16,12 @@ const zhenai_url = "http://www.zhenai.com/zhenghun"
 const province_url = "http://www.maps7.com/china_province.php"
 const huazhengcaiwu = "https://www.huazhengcaiwu.com/city/"
 
-var rateLimiter = time.Tick(450 * time.Millisecond)
+var rateLimiter = time.Tick(100 * time.Millisecond)
 
 func Fetch(url string) ([]byte, error) {
+	//限流
 	<-rateLimiter
+	log.Println("Fetching url: ", url)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		panic(err)
@@ -40,9 +41,10 @@ func Fetch(url string) ([]byte, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("Wrong status code: %d", resp.StatusCode)
-	}
+
+	//if resp.StatusCode != http.StatusOK {
+	//	return nil, fmt.Errorf("Wrong status code: %d", resp.StatusCode)
+	//}
 	/*
 		//如果读取的网页不是utf-8编码，中文就会显示乱码，此部分注释的代码就是转码操作
 		bodyReader := bufio.NewReader(resp.Body)

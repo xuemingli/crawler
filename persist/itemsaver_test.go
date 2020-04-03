@@ -34,7 +34,7 @@ func TestSave(t *testing.T) {
 		panic(err)
 	}
 	const index = "dating_test"
-	err = save(client, expected, index)
+	err = Save(client, expected, index)
 	if err != nil {
 		panic(err)
 	}

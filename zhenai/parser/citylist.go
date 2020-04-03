@@ -24,7 +24,7 @@ func ParseCityList(contents []byte) engine.ParseResult {
 		w = urlprefix
 		w += string(m[1])
 		//result.Items = append(result.Items, "City "+string(m[2]))
-		result.Requests = append(result.Requests, engine.Request{Url: w, ParserFunc: ParseCity})
+		result.Requests = append(result.Requests, engine.Request{Url: w, Parser: engine.NewFuncParser(ParseCity, "ParseCity")})
 		//fmt.Printf("city: %s, url: %s\n", m[2], w)
 		//limit--
 		//if limit == 0 {
