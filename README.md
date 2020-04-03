@@ -142,7 +142,7 @@ $ sudo docker run hello-world
   ```Bash
   go run crawler\crawler_distributed\persist\server\itemSaver.go --port=1234
   ```
-* 启动多个worker,用不同的端口进行RPC服务：
+* 启动多个worker，用不同的端口提供RPC服务：
   ```Bash
   go run crawler\crawler_distributed\worker\server\worker.go --port=9000
   go run crawler\crawler_distributed\worker\server\worker.go --port=9001
