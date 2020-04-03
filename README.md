@@ -1,5 +1,5 @@
 # crawler
->>这是一个用go语言写的爬虫项目，用来爬取某相亲网站里面的人物信息，将信息存储到Elasticsearch中，通过简单的前端页面进行筛选并显示。
+>>这是一个后端基于go语言的分布式爬虫项目，用来爬取某相亲网站里面的人物信息，并存储到Elasticsearch中，通过简单的前端页面进行筛选并显示。
 
 ## 环境
 * Linux:
@@ -129,10 +129,26 @@ $ sudo docker run hello-world
   go get github.com/olivere/elastic/v7
   ```
 ## 运行
-* 运行main.go进行数据爬取
-* 运行start.go启动本地web服务
+### 单机版
+* 运行go run crawler\main.go进行数据爬取
+* 运行go run crawler\frontend\start.go启动本地web服务
 * 访问localhost:8888
   * 首页信息如下图
   ![](https://github.com/xuemingli/crawler/blob/master/index.png "首页信息") 
   * 查询信息如下图
   ![](https://github.com/xuemingli/crawler/blob/master/show.png "信息展示") 
+### 分布式版
+* 启动ElasticSearch存储服务，RPC服务于本地的1234端口：
+  ```Bash
+  go run crawler\crawler_distributed\persist\server\itemSaver.go --port=1234
+  ```
+* 启动多个worker,用不同的端口进行RPC服务：
+  ```Bash
+  go run crawler\crawler_distributed\worker\server\worker.go --port=9000
+  go run crawler\crawler_distributed\worker\server\worker.go --port=9001
+  go run crawler\crawler_distributed\worker\server\worker.go --port=9002
+  ```
+* 启动engine，进行主程序调度，包括一个存储服务的RPC客户端协程：
+  ```Bash
+  go run crawler\crawler_distributed\main.go --itemsaver_host=":1234" --worker_host=":9000,:9001,:9002"
+  ```
